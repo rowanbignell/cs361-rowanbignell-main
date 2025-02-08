@@ -1,0 +1,26 @@
+{
+  "name": "cs361-rowanbignell-main",
+  "version": "1.0.0",
+  "description": "Main for Pomodoro timer?",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rowanbignell/cs361-rowanbignell-main.git"
+  },
+  "author": "Rowan Bignell",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rowanbignell/cs361-rowanbignell-main/issues"
+  },
+  "homepage": "https://github.com/rowanbignell/cs361-rowanbignell-main#readme",
+  "dependencies": {
+    "express": "^4.21.2",
+    "express-handlebars": "^8.0.1",
+    "handlebars": "^4.7.8",
+    "nodemon": "^3.1.9"
+  }
+}
