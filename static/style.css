@@ -66,11 +66,74 @@ main {
     align-items: center;
     max-height: 40%;
     min-height: 200px;
+    position:relative;
 }
 
 #info-button {
-    position:relative;
-    right: 0px;
+    float: right;
+    position:absolute;
+    top: 10px;
+    right: 10px;
+    border:none;
+    border-radius: 35px;
+    height:30px;
+    width: 30px;
+    font-size: 35px;
+    padding: 0px;
+    color: var(--primary-color);
+    cursor: pointer;
+}
+
+#info-button:hover {
+    height:35px;
+    width: 35px;
+    background-color: none;
+    color: var(--dark-font);
+}
+
+#main-timer {
+    font-size:120px;
+}
+
+#timer-rule {
+    color: var(--dark-font);
+}
+
+#main-button-container {
+    padding-top: 20px;
+    width: 25%;
+}
+
+.main-button {
+    cursor: pointer;
+    width: 100%;
+    height: 50px;
+    border: solid;
+    border-radius: 10px;
+    border-width: 1px;
+    border-color: var(--dark-font);
+    font-weight: bold;
+    font-size: 30px;
+    -webkit-text-stroke: 0.75px var(--dark-font);
+    color: var(--light-font);
+    box-shadow: 3px 4px 0px rgba(0, 0, 0, 1);
+    transition-duration: 0.4s;
+}
+
+#start-button {
+    background-color: var(--primary-color);
+}
+
+#start-button:hover {
+    background-color: grey;
+}
+
+#stop-button {
+    background-color: grey;
+}
+
+#stop-button:hover {
+    background-color: var(--primary-color);
 }
 
 #button-container{
@@ -82,6 +145,10 @@ main {
     position:relative;
     align-items: center;
     justify-content:center;
+}
+
+.timer-button {
+
 }
 
 #modal-backdrop {
