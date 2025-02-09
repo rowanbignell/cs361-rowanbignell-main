@@ -4,25 +4,44 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tomato Tracker</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="/style.css" defer>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.8/handlebars.js" charset="utf-8" defer></script>
-    <script src="/rewardTemplate.js" defer></script>
-    <script src="/taskTemplate.js" defer></script>
     <script src="/index.js" charset="utf-8" defer></script>
 </head>
 <body>
     <header>
-        <h1><a href="/">Tomato Tracker</a></h1>
+        <h1 class="site-title">Tomato Tracker</h1>
     </header>
 
     <main>
+        <section id="timer-container">
+            <button id="info-button"><i class="fa fa-info-circle"></i></button>
+            <div id="timer-display">
+                <h2 id="main-timer">25:00</h2>
+                <hr id="timer-rule">
+            </div>
 
+            <div id="main-button-container">
+                <button class="main-button" id="start-button">START</button>
+                <button class="main-button hidden" id="stop-button">STOP</button>
+            </div>
+        </section>
+
+        <section id="button-container">
+            <button class="timer-button" id="long-button">Long Break</button>
+            <button class="timer-button active" id="focus-button">Focus</button>
+            <button class="timer-button" id="short-button">Short Break</button>
+        </section>
     </main>
 
-    <footer>
-        <p>&copy; 2024 Task & Reward Manager</p>
-    </footer>
+
+    <div class="modal-container hidden" id="info-modal">
+        <div class="modal">
+
+        </div>
+    </div>
     
 </body>
 </html>
