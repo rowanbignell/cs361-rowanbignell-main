@@ -123,7 +123,7 @@ function startTimer(){
 }
 
 function handleStartButton(event){
-    interval = setInterval(startTimer, 10)
+    interval = setInterval(startTimer, 1000)
     event.target.classList.toggle('hidden')
     var stopButton = document.getElementById('stop-button')
     stopButton.classList.toggle('hidden')
