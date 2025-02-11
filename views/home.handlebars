@@ -13,12 +13,11 @@
     </section>
 
     <section id="button-container">
-        <button class="timer-button tooltip" id="long-button" title="Skip to Long Break. If you skip, the progress of the current timer will be lost.">Long Break</button>
+        <button class="timer-button" id="long-button" title="Skip to Long Break. If you skip, the progress of the current timer will be lost.">Long Break</button>
         <button class="timer-button active" id="focus-button" title="Skip to Focus. If you skip, the progress of the current timer will be lost.">Focus</button>
         <button class="timer-button" id="short-button" title="Skip to Short Break. If you skip, the progress of the current timer will be lost.">Short Break</button>
     </section>
 </main>
-
 
 <div class="hidden" id="modal-backdrop"></div>
 
@@ -39,9 +38,9 @@
 
 <div class="modal-container hidden" id="skip-long-modal">
     <div class="modal confirmation">
-        <h3>Are you sure you want to skip Long Break?</h3>
+        <h3>Are you sure you want to skip Long Break? This will reset your progress to Long Break.</h3>
         <div class="dialog-buttons">
-            <button id = "no-skip-button modal-close" class="confirmation-button">No</button>
+            <button id = "no-skip-button" class="confirmation-button modal-hide-button">No</button>
             <button id = "yes-skip-button" class="confirmation-button">Yes</button>
         </div>
     </div>
