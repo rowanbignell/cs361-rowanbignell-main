@@ -17,7 +17,58 @@ function hideModal (event){
     currentModal.classList.toggle('hidden')
 }
 
+function updateRound(){
+    var insertRound = document.getElementById('round-display')
+    insertRound.innerHTML = "Round " + round + "/4"
+}
 
+function switchToFocus() {
+    var root = document.querySelector(':root')
+    timerType = 0 //set timer type
+    root.style.setProperty('--primary-color', 'var(--focus-color)') //change color
+    currentTime = focusTime * 60 //set current time and update
+    updateTimer()
+
+    //update buttons
+    var focusButton = document.getElementById('focus-button')
+    var longButton = document.getElementById('long-button')
+    var shortButton = document.getElementById('short-button')
+    focusButton.disabled = true
+    longButton.disabled = false
+    shortButton.disabled = false
+}
+
+function switchToShort() {
+    var root = document.querySelector(':root')
+    timerType = 1 //set timer type
+    root.style.setProperty('--primary-color', 'var(--short-color)') //change color
+    currentTime = shortBreakTime * 60 //set current time and update
+    updateTimer()
+
+    //update buttons
+    var focusButton = document.getElementById('focus-button')
+    var longButton = document.getElementById('long-button')
+    var shortButton = document.getElementById('short-button')
+    focusButton.disabled = false
+    longButton.disabled = false
+    shortButton.disabled = true
+}
+
+function switchToLong() {
+    var root = document.querySelector(':root')
+    timerType = 1 //set timer type
+    root.style.setProperty('--primary-color', 'var(--long-color)') //change color
+    currentTime = longBreakTime * 60 //set current time and update
+    updateTimer()
+
+    //update buttons
+    var focusButton = document.getElementById('focus-button')
+    var longButton = document.getElementById('long-button')
+    var shortButton = document.getElementById('short-button')
+    focusButton.disabled = false
+    longButton.disabled = true
+    shortButton.disabled = false
+}
 
 function updateTimer() {
     var toUpdate
@@ -57,22 +108,14 @@ function startTimer(){
 
         var root = document.querySelector(':root')
         if(timerType){ //currently in a break
-            timerType = 0
-            root.style.setProperty('--primary-color', 'var(--focus-color)')
-            currentTime = focusTime * 60
-            updateTimer()
+            switchToFocus()
         } else if (timerType == 0) { //currently in a focus session
             round++
+            updateRound()
             if(round == 4){ //go into a long break
-                timerType = 2
-                root.style.setProperty('--primary-color', 'var(--long-color)')
-                currentTime = longBreakTime * 60
-                updateTimer()
+                switchToLong()
             } else {        //go into a short break
-                timerType = 1
-                root.style.setProperty('--primary-color', 'var(--short-color)')
-                currentTime = shortBreakTime * 60
-                updateTimer()
+                switchToShort()
             }
         }
     }
@@ -93,9 +136,6 @@ function handleStopButton(event){
     startButton.classList.toggle('hidden')
 }
 
-function handleFocusButton(event){
-
-}
 
 function handleLongBreakButton(event){
     var longConfirm = document.getElementById('skip-long-modal')
@@ -103,12 +143,12 @@ function handleLongBreakButton(event){
     modalBackdrop.classList.toggle('hidden')
 }
 
-function handleShortBreakButton(event){
-
-}
 
 function handleYesSkipButton(event){
     hideModal(event)
+    round = 0
+    updateRound()
+    switchToLong()
 }
 
 /*------------------------------
@@ -147,7 +187,7 @@ window.addEventListener('DOMContentLoaded', function () {
     //focus button
     var focusButton = document.getElementById('focus-button')
     if(focusButton) {
-        focusButton.addEventListener('click', handleFocusButton)
+        focusButton.addEventListener('click', switchToFocus)
     }
 
     //long break button
@@ -159,7 +199,7 @@ window.addEventListener('DOMContentLoaded', function () {
     //short break button
     var shortBreakButton = document.getElementById('short-button')
     if(shortBreakButton) {
-        shortBreakButton.addEventListener('click', handleShortBreakButton)
+        shortBreakButton.addEventListener('click', switchToShort)
     } 
 
     var yesSkipButton = document.getElementById('yes-skip-button')

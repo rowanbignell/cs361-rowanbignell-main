@@ -1,6 +1,9 @@
 <main>
     <section id="timer-container">
         <button id="info-button"><i class="fa fa-info-circle"></i></button>
+        <div id="round-container">
+            <h3 id="round-display">Round 0/4</h3>
+        </div>
         <div id="timer-display">
             <h2 id="main-timer">25:00</h2>
             <hr id="timer-rule">
@@ -14,7 +17,7 @@
 
     <section id="button-container">
         <button class="timer-button" id="long-button" title="Skip to Long Break. If you skip, the progress of the current timer will be lost.">Long Break</button>
-        <button class="timer-button active" id="focus-button" title="Skip to Focus. If you skip, the progress of the current timer will be lost.">Focus</button>
+        <button disabled class="timer-button" id="focus-button" title="Skip to Focus. If you skip, the progress of the current timer will be lost.">Focus</button>
         <button class="timer-button" id="short-button" title="Skip to Short Break. If you skip, the progress of the current timer will be lost.">Short Break</button>
     </section>
 </main>
