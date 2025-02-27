@@ -7,6 +7,7 @@ var timerType = 0           // 0 = focus, 1 = short break, 2 = long break
 var currentTime = 25 * 60
 var interval;
 var round = 0;
+var loggedIn = "";
 
 /*------------------
 hides the current modal
@@ -123,7 +124,7 @@ function startTimer(){
 }
 
 function handleStartButton(event){
-    interval = setInterval(startTimer, 1000)
+    interval = setInterval(startTimer, 10)
     event.target.classList.toggle('hidden')
     var stopButton = document.getElementById('stop-button')
     stopButton.classList.toggle('hidden')
