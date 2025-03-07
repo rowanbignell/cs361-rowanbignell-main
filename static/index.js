@@ -1,3 +1,4 @@
+const microA = "http://localhost:51336"
 const modalBackdrop = document.getElementById('modal-backdrop')
 var timer = document.getElementById('main-timer')
 var focusTime = 25
@@ -7,7 +8,8 @@ var timerType = 0           // 0 = focus, 1 = short break, 2 = long break
 var currentTime = 25 * 60
 var interval;
 var round = 0;
-var loggedIn = "";
+var signedIn = "";
+
 
 /*------------------
 hides the current modal
@@ -16,6 +18,16 @@ function hideModal (event){
     var currentModal = event.target.closest('.modal-container')
     modalBackdrop.classList.toggle('hidden')
     currentModal.classList.toggle('hidden')
+}
+
+function handleSignIn(username){
+    signedIn = username
+    var signUpButton = document.getElementById('sign-up-button')
+    var logOutButton = document.getElementById('sign-out-button')
+    var signInButton = document.getElementById('sign-in-button')
+    signUpButton.classList.toggle('hidden')
+    logOutButton.classList.toggle('hidden')
+    signInButton.classList.toggle('hidden')
 }
 
 function updateRound(){
@@ -152,6 +164,58 @@ function handleYesSkipButton(event){
     switchToLong()
 }
 
+function handleSignInButton(event){
+    var signInModal = document.getElementById('sign-in-modal')
+    modalBackdrop.classList.toggle('hidden')
+    signInModal.classList.toggle('hidden')
+}
+
+function handleSignUpButton(event){
+    var signUpModal = document.getElementById('sign-up-modal')
+    modalBackdrop.classList.toggle('hidden')
+    signUpModal.classList.toggle('hidden')
+}
+
+function handleSignUpSubmit(event){
+    var username = document.getElementById('sign-up-username').value.trim()
+    var password = document.getElementById('sign-up-password').value.trim()
+
+    if (!username || !password){
+        alert("You must fill in both fields.")
+    } else {
+        var url = microA + "/create"
+        fetch(url, {
+            method: "POST",
+            body: JSON.stringify({
+                username: username,
+                password: password
+            }),
+            headers: {
+                "Content-Type": "application/json"
+            }
+        }).then(function(res){
+            if(res.status === 201){
+                handleSignIn(username)
+                hideModal(event)
+                document.getElementById('sign-up-form').reset()
+            } else {
+                var errorMsg = "Failed to create user."
+                alert(errorMsg)
+            }
+        })
+    }
+}
+
+function handleLogOutButton(event){
+    signedIn = ""
+    var signUpButton = document.getElementById('sign-up-button')
+    var logOutButton = document.getElementById('log-out-button')
+    var signInButton = document.getElementById('sign-in-button')
+    signUpButton.classList.toggle('hidden')
+    logOutButton.classList.toggle('hidden')
+    signInButton.classList.toggle('hidden')
+}
+
 /*------------------------------
  add event listeners to buttons
  -------------------------------*/
@@ -206,5 +270,26 @@ window.addEventListener('DOMContentLoaded', function () {
     var yesSkipButton = document.getElementById('yes-skip-button')
     if(yesSkipButton){
         yesSkipButton.addEventListener('click', handleYesSkipButton)
+    }
+
+    //sign in
+    var signInButton = document.getElementById('sign-in-button')
+    if(signInButton) {
+        signInButton.addEventListener('click', handleSignInButton)
+    }
+
+    var signUpButton = document.getElementById('sign-up-button')
+    if(signUpButton) {
+        signUpButton.addEventListener('click', handleSignUpButton)
+    }
+
+    var logOutButton = document.getElementById('log-out-button')
+    if(logOutButton) {
+        logOutButton.addEventListener('click', handleLogOutButton)
+    }
+
+    var signUpSubmit = document.getElementById('sign-up-submit')
+    if(signUpSubmit) {
+        signUpSubmit.addEventListener('click', handleSignUpSubmit)
     }
 })

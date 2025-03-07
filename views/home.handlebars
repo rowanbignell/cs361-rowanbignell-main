@@ -48,3 +48,42 @@
         </div>
     </div>
 </div>
+
+<!-- Login Modal -->
+<div class="modal-container hidden" id="sign-in-modal">
+    <div class="modal">
+        <div class="modal-header">
+            <h3>Sign In</h3>
+            <button type="button" id="modal-close" class="modal-hide-button">&times;</button>
+        </div>
+
+        <div class="modal-body">
+            <form id="sign-in-form" action="/sign-in" target="sign-in-frame">
+                <label class="form-item" for="sign-in-username">Username:</label><br>
+                <input class="form-item" type="text" id="sign-in-username" name="sign-in-username" value=""><br>
+                <label class="form-item" for="sign-in-password">Password:</label><br>
+                <input class="form-item" type="text" id="sign-in-password" name="sign-in-password" value=""><br><br>
+                <input class="form-item" type="submit" value="Submit" class="modal-hide-button">
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal-container hidden" id="sign-up-modal">
+    <div class="modal">
+        <div class="modal-header">
+            <h3>Sign Up</h3>
+            <button type="button" id="modal-close" class="modal-hide-button">&times;</button>
+        </div>
+
+        <div class="modal-body">
+            <form id="sign-up-form">
+                <label class="form-item" for="sign-up-username">Username:</label><br>
+                <input class="form-item" type="text" id="sign-up-username" name="sign-up-username" value=""><br>
+                <label class="form-item" for="sign-up-password">Password:</label><br>
+                <input class="form-item" type="text" id="sign-up-password" name="sign-up-password" value=""><br><br>
+                <input class="form-item" type="button" value="Submit" id="sign-up-submit">
+            </form>
+        </div>
+    </div>
+</div>
