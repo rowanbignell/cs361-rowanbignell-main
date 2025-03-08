@@ -176,6 +176,36 @@ function handleSignUpButton(event){
     signUpModal.classList.toggle('hidden')
 }
 
+function handleSignInSubmit(event){
+    var username = document.getElementById('sign-in-username').value.trim()
+    var password = document.getElementById('sign-in-password').value.trim()
+
+    if (!username || !password){
+        alert("You must fill in both fields.")
+    } else {
+        var url = microA + "/login"
+        fetch(url, {
+            method: "POST",
+            body: JSON.stringify({
+                username: username,
+                password: password
+            }),
+            headers: {
+                "Content-Type": "application/json"
+            }
+        }).then(function(res){
+            if(res.status === 200){
+                handleSignIn(username)
+                hideModal(event)
+                document.getElementById('sign-in-form').reset()
+            } else {
+                var errorMsg = "Failed to log in."
+                alert(errorMsg)
+            }
+        })
+    }
+}
+
 function handleSignUpSubmit(event){
     var username = document.getElementById('sign-up-username').value.trim()
     var password = document.getElementById('sign-up-password').value.trim()
@@ -197,7 +227,7 @@ function handleSignUpSubmit(event){
             if(res.status === 201){
                 handleSignIn(username)
                 hideModal(event)
-                document.getElementById('sign-up-form').reset()
+                document.getElementById('sign-in-form').reset()
             } else {
                 var errorMsg = "Failed to create user."
                 alert(errorMsg)
@@ -207,13 +237,15 @@ function handleSignUpSubmit(event){
 }
 
 function handleLogOutButton(event){
-    signedIn = ""
-    var signUpButton = document.getElementById('sign-up-button')
-    var logOutButton = document.getElementById('log-out-button')
-    var signInButton = document.getElementById('sign-in-button')
-    signUpButton.classList.toggle('hidden')
-    logOutButton.classList.toggle('hidden')
-    signInButton.classList.toggle('hidden')
+    if(confirm("Are you sure you want to log out, " + signedIn + "?")){
+        signedIn = ""
+        var signUpButton = document.getElementById('sign-up-button')
+        var logOutButton = document.getElementById('sign-out-button')
+        var signInButton = document.getElementById('sign-in-button')
+        signUpButton.classList.toggle('hidden')
+        logOutButton.classList.toggle('hidden')
+        signInButton.classList.toggle('hidden')
+    }
 }
 
 /*------------------------------
@@ -283,7 +315,7 @@ window.addEventListener('DOMContentLoaded', function () {
         signUpButton.addEventListener('click', handleSignUpButton)
     }
 
-    var logOutButton = document.getElementById('log-out-button')
+    var logOutButton = document.getElementById('sign-out-button')
     if(logOutButton) {
         logOutButton.addEventListener('click', handleLogOutButton)
     }
@@ -291,5 +323,10 @@ window.addEventListener('DOMContentLoaded', function () {
     var signUpSubmit = document.getElementById('sign-up-submit')
     if(signUpSubmit) {
         signUpSubmit.addEventListener('click', handleSignUpSubmit)
+    }
+
+    var signInSubmit = document.getElementById('sign-in-submit')
+    if(signInSubmit) {
+        signInSubmit.addEventListener('click', handleSignInSubmit)
     }
 })
