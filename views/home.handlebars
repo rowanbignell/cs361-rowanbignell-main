@@ -62,13 +62,14 @@
                 <label class="form-item" for="sign-in-username">Username:</label><br>
                 <input class="form-item" type="text" id="sign-in-username" name="sign-in-username" value=""><br>
                 <label class="form-item" for="sign-in-password">Password:</label><br>
-                <input class="form-item" type="text" id="sign-in-password" name="sign-in-password" value=""><br><br>
+                <input class="form-item" type="password" id="sign-in-password" name="sign-in-password" value=""><br><br>
                 <input class="form-item" type="button" value="Submit" id="sign-in-submit">
             </form>
         </div>
     </div>
 </div>
 
+<!-- sign up Modal -->
 <div class="modal-container hidden" id="sign-up-modal">
     <div class="modal">
         <div class="modal-header">
@@ -81,9 +82,38 @@
                 <label class="form-item" for="sign-up-username">Username:</label><br>
                 <input class="form-item" type="text" id="sign-up-username" name="sign-up-username" value=""><br>
                 <label class="form-item" for="sign-up-password">Password:</label><br>
-                <input class="form-item" type="text" id="sign-up-password" name="sign-up-password" value=""><br><br>
+                <input class="form-item" type="password" id="sign-up-password" name="sign-up-password" value=""><br><br>
                 <input class="form-item" type="button" value="Submit" id="sign-up-submit">
             </form>
+        </div>
+    </div>
+</div>
+
+
+<!-- settings Modal -->
+<div class="modal-container hidden" id="settings-modal">
+    <div class="modal">
+        <div class="modal-header">
+            <h3>Settings</h3>
+            <button type="button" id="modal-close" class="modal-hide-button">&times;</button>
+        </div>
+
+        <div class="modal-body">
+            <div id="settings-container">
+                <div class="setting-item">
+                    <label for="settings-short-break-length">Short Break Length (minutes):</label>
+                    <input class="setting-text" type="number" id="settings-short-break-length" name="settings-short-break-length" onfocusout="handleSettingShortBreak()" value="5">
+                </div><br>
+                <div class="setting-item">
+                    <label for="settings-long-break-length">Long Break Timer Length (minutes):</label>
+                    <input class="setting-text" type="number" id="settings-long-break-length" name="settings-long-break-length" onfocusout="handleSettingLongBreak()" value="25">
+                </div><br>
+                <div class="setting-item">
+                    <label for="settings-webhook">Webhook Notifications:</label>
+                    <input class="setting-checkbox" onclick="handleSettingWebhook()" type="checkbox" id="settings-webhook">
+                    <input class="setting-text" type="url" readonly id="settings-webhook-key" name="settings-webhook-key" onfocusout="handleSettingWebhookKey()" value="">
+                </div><br>
+            </div>
         </div>
     </div>
 </div>

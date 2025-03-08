@@ -354,3 +354,7 @@ button:disabled {
     height: 50px;
     border: none;
 }
+
+#settings-container {
+    margin:15px;
+}

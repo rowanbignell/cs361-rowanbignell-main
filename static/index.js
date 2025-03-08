@@ -5,10 +5,11 @@ var focusTime = 25
 var shortBreakTime = 5
 var longBreakTime = 25
 var timerType = 0           // 0 = focus, 1 = short break, 2 = long break
-var currentTime = 25 * 60
+var currentTime = focusTime * 60;
 var interval;
 var round = 0;
 var signedIn = "";
+var sendWebhook = false;
 
 
 /*------------------
@@ -248,6 +249,54 @@ function handleLogOutButton(event){
     }
 }
 
+function handleSettingsButton(event){
+    var settingsModal = document.getElementById('settings-modal')
+    modalBackdrop.classList.toggle('hidden')
+    settingsModal.classList.toggle('hidden')
+}
+
+/*------------------------------
+ handle settings unfocusing
+ -------------------------------*/
+ function handleSettingShortBreak(){
+    var value = document.getElementById('settings-short-break-length').value
+
+    //update value with new value
+    shortBreakTime = value
+
+    //if logged in, send to server
+
+ }
+
+ function handleSettingLongBreak(){
+    var value = document.getElementById('settings-long-break-length').value
+
+    //update value with new value
+    longBreakTime = value
+
+    //if logged in, send to server
+ }
+
+ function handleSettingWebhookKey(){
+    var value = document.getElementById('settings-webhook-key').value
+    //update server
+
+ }
+
+ function handleSettingWebhook(){
+    var checked = document.getElementById('settings-webhook').checked
+    //toggle greyed out
+    var key = document.getElementById('settings-webhook-key')
+    if(checked){
+        key.readOnly = false
+        //update server
+        sendWebhook = true
+    } else {
+        key.readOnly = true
+        //update server
+        sendWebhook = false
+    }
+ }
 /*------------------------------
  add event listeners to buttons
  -------------------------------*/
@@ -328,5 +377,10 @@ window.addEventListener('DOMContentLoaded', function () {
     var signInSubmit = document.getElementById('sign-in-submit')
     if(signInSubmit) {
         signInSubmit.addEventListener('click', handleSignInSubmit)
+    }
+
+    var settingsButton = document.getElementById('settings-button')
+    if(settingsButton) {
+        settingsButton.addEventListener('click', handleSettingsButton)
     }
 })
