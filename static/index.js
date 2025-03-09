@@ -101,7 +101,10 @@ function handleSignIn(username){
 
         document.getElementById('settings-webhook').checked = data.webhook
         sendWebhook = data.webhook
-        document.getElementById('settings-webhook-key') = data.webhookKey
+        if(sendWebhook){
+            document.getElementById('settings-webhook-key').readOnly = false
+        }
+        document.getElementById('settings-webhook-key').value = data.webhookKey
     })
 
     //update site
@@ -117,7 +120,7 @@ function handleSignIn(username){
 function updateSettings(){
     //get settings
     var checked = document.getElementById('settings-webhook').checked
-    var key = document.getElementById('settings-webhook-key')
+    var key = document.getElementById('settings-webhook-key').value
 
 
     //post
