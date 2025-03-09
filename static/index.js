@@ -1,4 +1,5 @@
 const microA = "http://localhost:51336"
+const microB = "http://localhost:3010"
 const modalBackdrop = document.getElementById('modal-backdrop')
 var timer = document.getElementById('main-timer')
 var focusTime = 25
@@ -22,6 +23,30 @@ function hideModal (event){
 }
 
 function handleSignIn(username){
+    //fetch settings
+    var url = microB + "/" + username
+    fetch(url, {
+        method: "GET",
+        headers: {  
+        "Content-Type": "application/json"
+        }
+    }).then(response => {
+        return response.json()
+    })
+    .then(data => {
+        //update site with data
+        shortBreakTime = data.shortLength
+        document.getElementById('settings-short-break-length').value = data.shortLength
+
+        document.getElementById('settings-long-break-length').value = data.longLength
+        longBreakTime = data.longLength
+
+        document.getElementById('settings-webhook').checked = data.webhook
+        sendWebhook = data.webhook
+        document.getElementById('settings-webhook-key') = data.webhookKey
+    })
+
+    //update site
     signedIn = username
     var signUpButton = document.getElementById('sign-up-button')
     var logOutButton = document.getElementById('sign-out-button')
@@ -29,6 +54,62 @@ function handleSignIn(username){
     signUpButton.classList.toggle('hidden')
     logOutButton.classList.toggle('hidden')
     signInButton.classList.toggle('hidden')
+}
+
+function updateSettings(){
+    //get settings
+    var checked = document.getElementById('settings-webhook').checked
+    var key = document.getElementById('settings-webhook-key')
+
+
+    //post
+    var url = microB + "/" + signedIn
+        fetch(url, {
+            method: "PUT",
+            body: JSON.stringify({
+                shortLength: shortBreakTime,
+                longLength: longBreakTime,
+                webhook: checked,
+                webhookKey: key
+            }),
+            headers: {
+                "Content-Type": "application/json"
+            }
+        }).then(function(res){
+            if(res.status === 200){
+
+            } else {
+                alert("Failure to save settings data.")
+            }
+        })
+}
+
+function createUserSettings(username){
+    //get settings
+    var checked = document.getElementById('settings-webhook').checked
+    var key = document.getElementById('settings-webhook-key')
+
+
+    //post
+    var url = microB + "/" + username
+        fetch(url, {
+            method: "POST",
+            body: JSON.stringify({
+                shortLength: shortBreakTime,
+                longLength: longBreakTime,
+                webhook: checked,
+                webhookKey: key
+            }),
+            headers: {
+                "Content-Type": "application/json"
+            }
+        }).then(function(res){
+            if(res.status === 200){
+
+            } else {
+                alert("Failure to save settings data.")
+            }
+        })
 }
 
 function updateRound(){
@@ -226,6 +307,7 @@ function handleSignUpSubmit(event){
             }
         }).then(function(res){
             if(res.status === 201){
+                createUserSettings(username)
                 handleSignIn(username)
                 hideModal(event)
                 document.getElementById('sign-in-form').reset()
@@ -265,6 +347,9 @@ function handleSettingsButton(event){
     shortBreakTime = value
 
     //if logged in, send to server
+    if(signedIn){
+        updateSettings()
+    }
 
  }
 
@@ -275,12 +360,17 @@ function handleSettingsButton(event){
     longBreakTime = value
 
     //if logged in, send to server
+    if(signedIn){
+        updateSettings()
+    }
  }
 
  function handleSettingWebhookKey(){
     var value = document.getElementById('settings-webhook-key').value
     //update server
-
+    if(signedIn){
+        updateSettings()
+    }
  }
 
  function handleSettingWebhook(){
@@ -291,10 +381,18 @@ function handleSettingsButton(event){
         key.readOnly = false
         //update server
         sendWebhook = true
+
+        if(signedIn){
+            updateSettings()
+        }
     } else {
         key.readOnly = true
         //update server
         sendWebhook = false
+
+        if(signedIn){
+            updateSettings()
+        }
     }
  }
 /*------------------------------
