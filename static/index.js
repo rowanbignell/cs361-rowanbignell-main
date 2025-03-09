@@ -1,5 +1,6 @@
 const microA = "http://localhost:51336"
 const microB = "http://localhost:3010"
+const microC = "http://localhost:5013"
 const modalBackdrop = document.getElementById('modal-backdrop')
 var timer = document.getElementById('main-timer')
 var focusTime = 25
@@ -20,6 +21,63 @@ function hideModal (event){
     var currentModal = event.target.closest('.modal-container')
     modalBackdrop.classList.toggle('hidden')
     currentModal.classList.toggle('hidden')
+}
+
+/*------------------
+manage notifications
+--------------------*/
+function notifyFocus(){
+    //webhook
+    if(sendWebhook){
+        var webhook = document.getElementById('settings-webhook-key').value
+        var url = microC + "/focus"
+
+        fetch(url, {
+            method: "POST",
+            body: JSON.stringify({
+                webhook: webhook
+            }),
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+    }
+}
+
+function notifyLong(){
+    //webhook
+    if(sendWebhook){
+        var webhook = document.getElementById('settings-webhook-key').value
+        var url = microC + "/long"
+
+        fetch(url, {
+            method: "POST",
+            body: JSON.stringify({
+                webhook: webhook
+            }),
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+    }
+}
+
+function notifyShort(){
+    //webhook
+    if(sendWebhook){
+        var webhook = document.getElementById('settings-webhook-key').value
+        var url = microC + "/short"
+
+        fetch(url, {
+            method: "POST",
+            body: JSON.stringify({
+                webhook: webhook
+            }),
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+    }
 }
 
 function handleSignIn(username){
@@ -151,7 +209,7 @@ function switchToShort() {
 
 function switchToLong() {
     var root = document.querySelector(':root')
-    timerType = 1 //set timer type
+    timerType = 2 //set timer type
     root.style.setProperty('--primary-color', 'var(--long-color)') //change color
     currentTime = longBreakTime * 60 //set current time and update
     updateTimer()
@@ -203,7 +261,13 @@ function startTimer(){
 
         var root = document.querySelector(':root')
         if(timerType){ //currently in a break
-            switchToFocus()
+            if(timerType === 2){
+                switchToFocus()
+                notifyLong()
+            } else {
+                switchToFocus()
+                notifyShort()
+            }
         } else if (timerType == 0) { //currently in a focus session
             round++
             updateRound()
@@ -212,6 +276,7 @@ function startTimer(){
             } else {        //go into a short break
                 switchToShort()
             }
+            notifyFocus()
         }
     }
 
