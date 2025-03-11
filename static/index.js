@@ -1,6 +1,7 @@
 const microA = "http://localhost:51336"
 const microB = "http://localhost:3010"
 const microC = "http://localhost:5013"
+const microD = "http://localhost:5123"
 const modalBackdrop = document.getElementById('modal-backdrop')
 var timer = document.getElementById('main-timer')
 var focusTime = 25
@@ -12,6 +13,7 @@ var interval;
 var round = 0;
 var signedIn = "";
 var sendWebhook = false;
+var totalRound = 0;
 
 
 /*------------------
@@ -80,8 +82,7 @@ function notifyShort(){
     }
 }
 
-function handleSignIn(username){
-    //fetch settings
+function fetchSettings(username){
     var url = microB + "/" + username
     fetch(url, {
         method: "GET",
@@ -106,6 +107,35 @@ function handleSignIn(username){
         }
         document.getElementById('settings-webhook-key').value = data.webhookKey
     })
+}
+
+
+function fetchStatistics(username){
+    var url = microD + "/" + username
+    fetch(url, {
+        method: "GET",
+        headers: {  
+        "Content-Type": "application/json"
+        }
+    }).then(response => {
+        return response.json()
+    })
+    .then(data => {
+        //update site with data
+        round = data.currRounds
+
+        totalRound = data.totalRounds
+        updateRound()
+    })
+}
+
+
+function handleSignIn(username){
+    //fetch settings
+    fetchSettings(username)
+
+    //fetch statistics
+    fetchStatistics(username)
 
     //update site
     signedIn = username
@@ -173,9 +203,53 @@ function createUserSettings(username){
         })
 }
 
+function createUserStatistics(username){
+    //post
+    var url = microD + "/" + username
+        fetch(url, {
+            method: "POST",
+            body: JSON.stringify({
+                currRounds: round,
+                totalRounds: totalRound
+            }),
+            headers: {
+                "Content-Type": "application/json"
+            }
+        }).then(function(res){
+            if(res.status === 200){
+
+            } else {
+                alert("Failure to save statistics data.")
+            }
+        })
+}
+
+function updateUserStatistics(){
+    //post
+    if(signedIn){
+        var url = microD + "/" + signedIn
+        fetch(url, {
+            method: "PUT",
+            body: JSON.stringify({
+                currRounds: round,
+                totalRounds: totalRound
+            }),
+            headers: {
+                "Content-Type": "application/json"
+            }
+        }).then(function(res){
+            if(res.status === 200){
+
+            } else {
+                alert("Failure to save statistics data.")
+            }
+        })
+    }
+}
+
 function updateRound(){
     var insertRound = document.getElementById('round-display')
-    insertRound.innerHTML = "Round " + round + "/4"
+    insertRound.innerHTML = "Round " + round + "/4 - Total Rounds: " + totalRound
 }
 
 function switchToFocus() {
@@ -216,6 +290,9 @@ function switchToLong() {
     root.style.setProperty('--primary-color', 'var(--long-color)') //change color
     currentTime = longBreakTime * 60 //set current time and update
     updateTimer()
+
+    round = 0
+    updateRound()
 
     //update buttons
     var focusButton = document.getElementById('focus-button')
@@ -272,13 +349,15 @@ function startTimer(){
                 notifyShort()
             }
         } else if (timerType == 0) { //currently in a focus session
+            totalRound++
             round++
             updateRound()
-            if(round == 4){ //go into a long break
+            if(round >= 4){ //go into a long break
                 switchToLong()
             } else {        //go into a short break
                 switchToShort()
             }
+            updateUserStatistics()
             notifyFocus()
         }
     }
@@ -312,6 +391,7 @@ function handleYesSkipButton(event){
     round = 0
     updateRound()
     switchToLong()
+    updateUserStatistics()
 }
 
 function handleSignInButton(event){
@@ -376,6 +456,7 @@ function handleSignUpSubmit(event){
         }).then(function(res){
             if(res.status === 201){
                 createUserSettings(username)
+                createUserStatistics(username)
                 handleSignIn(username)
                 hideModal(event)
                 document.getElementById('sign-in-form').reset()
